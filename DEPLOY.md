@@ -5,7 +5,7 @@
 
 ## 1. Vercel에 저장소 연결
 1. https://vercel.com 에서 GitHub 계정으로 로그인
-2. **Add New → Project** → `kusc-hsbg/affinity-board` 선택 → **Import**
+2. **Add New → Project** → `veldyofficial-cloud/affinity-board` 선택 → **Import**
 3. Framework는 자동으로 **Next.js**로 인식됩니다. 빌드 설정은 기본값 그대로 두세요.
 
 ## 2. 환경변수 2개 등록 (중요)
@@ -24,7 +24,7 @@ Import 화면(또는 Project → Settings → Environment Variables)에서 아�
 - 로그인 테스트: `.../user_090406` 접속 → 비밀번호 `090406`
 
 ## 4. (선택) GitHub Pages 정리
-기존 GitHub Pages(`kusc-hsbg.github.io/affinity-board`)는 정적 `docs/` 폴더라 이제 사용하지 않습니다.
+기존 GitHub Pages(`veldyofficial-cloud.github.io/affinity-board`, 정적 `docs/` 폴더)는 2026-10-21에 꺼두었습니다.
 혼동을 막으려면 GitHub → Settings → Pages 에서 **Source를 None**으로 꺼두는 것을 권장합니다.
 
 ## 이후 코드 변경 시
