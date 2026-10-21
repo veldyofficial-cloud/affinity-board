@@ -307,3 +307,11 @@ export async function deletePost(id: number, slug: string): Promise<{ ok: boolea
   await deleteStorageByUrls(urls);
   return { ok: true };
 }
+
+// Supabase 무료 플랜은 7일간 활동이 없으면 프로젝트를 일시정지 → 매일 가벼운 조회로 활동 유지
+export async function pingDatabase(): Promise<{ ok: boolean; message?: string }> {
+  if (!supabase) return { ok: false, message: "DB가 설정되지 않았습니다." };
+  const { error } = await supabase.from("students").select("slug", { count: "exact", head: true });
+  if (error) return { ok: false, message: error.message };
+  return { ok: true };
+}
