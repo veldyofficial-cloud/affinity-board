@@ -10532,11 +10532,9 @@ body > .section_wrap { display: none !important; }
     ptr.style.top = e.pageY + "px";
   });
 
-  // 초기: 비밀번호를 먼저 입력해야 열람 가능. 저장된 pw는 열람 모드로만 복원.
-  var qpw = new URLSearchParams(location.search).get("pw");
-  var savedPw = qpw || localStorage.getItem("pw:" + slug);
-  if (savedPw) loadBoard(savedPw, "view");
-  else showLogin("view");
+  // 초기: 비밀번호 없이 바로 열람(보기 전용). 편집은 헤더 LOGIN → 마스터 비밀번호.
+  hideLogin();
+  loadBoard("", "view");
 })();
 </script>
 </body></html>

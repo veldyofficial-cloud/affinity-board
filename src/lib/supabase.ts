@@ -88,6 +88,22 @@ export async function verifyStudent(
   return { ok: password === fallbackPw && fallbackPw.length > 0, name: "" };
 }
 
+// 열람용: 비밀번호 없이 학생 페이지가 등록되어 있는지만 확인한다.
+// DB 미설정(개발)일 때는 user_XXXX 형식이면 열람을 허용한다.
+export async function findStudent(slug: string): Promise<{ exists: boolean; name: string }> {
+  if (!dbConfigured()) return { exists: /^user_[A-Za-z0-9]+$/.test(slug), name: "" };
+  const { data, error } = await supabase!
+    .from("students")
+    .select("name")
+    .eq("slug", slug)
+    .maybeSingle();
+  if (error) {
+    console.error("students 조회 실패:", error.message);
+    return { exists: false, name: "" };
+  }
+  return { exists: !!data, name: (data?.name ?? "").trim() };
+}
+
 // 갤러리: student_id가 비어있으면 전체 공통, 일치하면 해당 학생 전용
 function fmtDate(iso: string): string {
   if (!iso) return "";

@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { verifyStudent, verifyAdmin, getBoardData } from "@/lib/supabase";
+import { verifyStudent, verifyAdmin, getBoardData, findStudent } from "@/lib/supabase";
 
 export const dynamic = "force-dynamic";
 
@@ -13,11 +13,15 @@ export async function POST(req: NextRequest) {
     }
 
     const pw = String(password ?? "");
-    if (typeof pw !== "string" || pw.length === 0) {
-      return NextResponse.json(
-        { ok: false, message: "비밀번호를 입력해 주세요." },
-        { status: 401 }
-      );
+    // 비밀번호 없이 열람: 등록된 학생 페이지면 보기 전용으로 연다 (편집은 마스터 비밀번호 필요)
+    if (pw.length === 0) {
+      const found = await findStudent(slug);
+      if (!found.exists) {
+        return NextResponse.json({ ok: false, message: "존재하지 않는 페이지입니다." }, { status: 404 });
+      }
+      const data = await getBoardData(slug);
+      if (!data.studentName && found.name) data.studentName = found.name;
+      return NextResponse.json({ ok: true, admin: false, ...data });
     }
 
     // 마스터 비밀번호면 편집 권한(admin), 아니면 학생 비밀번호(열람) 확인
